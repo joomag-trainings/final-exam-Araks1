@@ -1,0 +1,13 @@
+{
+    "require": {
+        "slim/slim": "^3.0",
+        "illuminate/database": "~5.1",
+        "slim/php-view": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Controller\\": "src/Controller/",
+            "Model\\": "src/Model/"
+        }
+    }
+}

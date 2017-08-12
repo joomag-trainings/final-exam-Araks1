@@ -1,0 +1,39 @@
+<?php include '../public/layouts/header.phtml'; ?>
+<div class="all">
+    <div id="wrapper">
+<div id="register" class="form">
+    <form  action="register" autocomplete="on" method="post">
+        <h1> Sign up </h1>
+        <p>
+            <?= $error; ?>
+            <label for="firstnamesignup" class="fname" >Your firstname</label>
+            <input id="firstnamesignup" name="firstname" required="required" type="text" placeholder="myfirstname" />
+        </p>
+        <p>
+            <label for="lastnamesignup" class="uname" >Your lastname</label>
+            <input id="lastnamesignup" name="lastname" required="required" type="text" placeholder="mylastname" />
+        </p>
+        <p>
+            <label for="usernamesignup" class="uname" >Your username</label>
+            <input id="usernamesignup" name="username" required="required" type="text" placeholder="mysuperusername690" />
+        </p>
+        <p>
+            <label for="emailsignup" class="youmail"  > Your email(required, but never shown)</label>
+            <input id="emailsignup" name="email" required="required" type="email" placeholder="mysupermail@mail.com"/>
+        </p>
+        <p>
+            <label for="passwordsignup" class="youpasswd" >Your password </label>
+            <input id="passwordsignup" name="password" required="required" type="password" placeholder="eg. X8df!90EO"/>
+        </p>
+        <p class="signin button">
+            <input type="submit" value="Sign up"/>
+        </p>
+        <p class="change_link">
+            Already a member ?
+            <a href="login" class="to_register"> Go and log in </a>
+        </p>
+    </form>
+</div>
+    </div>
+</div>
+<?php include '../public/layouts/footer.phtml'; ?>
