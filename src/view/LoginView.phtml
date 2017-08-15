@@ -3,11 +3,12 @@
         <div id="container_demo" >
             <div id="wrapper">
                 <div id="login" class="animate form">
-                    <form  action="" method="post" autocomplete="on">
+                    <?= $success; ?>
+                    <form  action="login" method="post" autocomplete="on">
                         <h1>Log in</h1>
                         <p>
-                            <label for="username" class="uname" > Your email or username </label>
-                            <input id="username" name="username" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
+                            <label for="email" class="uname" > Your email  </label>
+                            <input id="email" name="email" required="required" type="text" placeholder="mymail@mail.com"/>
                         </p>
                         <p>
                             <label for="password" class="youpasswd"> Your password </label>
