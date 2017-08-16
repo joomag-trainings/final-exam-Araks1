@@ -1,0 +1,19 @@
+<?php
+include '../public/layouts/header.phtml'; ?>
+
+<div class="container">
+    <h2>Create New Discussion</h2>
+
+    <form method="post" action="">
+        <div class="form-group">
+            <label for="usr">Title:</label>
+            <input type="text" class="form-control" id="usr">
+        </div>
+        <div class="form-group">
+            <label for="pwd">Descriptiom:</label>
+            <textarea type="text" class="form-control" id="desc"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+<script>CKEDITOR.replace('desc');</script>

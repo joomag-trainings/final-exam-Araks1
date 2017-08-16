@@ -1,0 +1,7 @@
+<?php
+include '../public/layouts/header.phtml';
+if(isset($_SESSION["id"])){ ?>
+    <a href="discussion">Create new discussion</a>
+<?php }  else { ?>
+    <a href="login">Login</a>or <a href="register">Register</a> to create new discussion
+<?php }?>

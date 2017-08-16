@@ -19,9 +19,10 @@ class AuthService
         }
         for ($i = 0; $i < count($all); $i++) {
             $password = $all[$i]['password'];
+            $id=$all[$i]['id'];
         }
         if (password_verify($pwd, $password)) {
-            return 1;
+            return $id;
         } else {
             return 0;
         }

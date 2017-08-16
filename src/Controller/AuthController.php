@@ -125,7 +125,7 @@ class AuthController
                             $mail->Host = "smtp.gmail.com";
                             $mail->Port = 587;
                             $mail->Username = "araqs.shahbazian@gmail.com";
-                            $mail->Password = "araqssh1995";
+                            $mail->Password = "*****";
 
                             $mail->setFrom('araqs.shahbazian@gmail.com', 'Forum');
                             $mail->addReplyTo('araqs.shahbazian@gmail.com', 'Forum');
@@ -137,16 +137,16 @@ class AuthController
         Thanks for Registration.  We have received a request for a creating account associated with this email address.
         </p>
         <p>
-        To confirm and reset your password, please click <a href='http://localhost/forum/public/index.php/login?hash=$hash'>here</a>.  If you did not initiate this request,
+        To confirm , please click <a href='http://localhost/forum/public/index.php/login?hash=$hash'>here</a>.  If you did not initiate this request,
         please disregard this message .
         </p >
         <p >
-        If you have any questions about this email, you may contact us at support@badger - dating . com .
+        If you have any questions about this email, you may contact us at support@forum. com .
         </p >
         <p >
                             With regards,
         <br >
-                            The BadgerDating . com Team
+                            The Forum . com Team
                             </p > ");
 
 
@@ -195,8 +195,10 @@ class AuthController
             $password = $_POST['password'];
             if ($email !== '' && $password !== '') {
                 $check = $this->db->checkLogin($email, $password);
-                if ($check === 1) {
-                    //redirect
+                if ($check !== 0) {
+                    session_start();
+                    $_SESSION["id"]=$check;
+                    return $response->withRedirect('home');
                 } else {
                     $this->setSuccessMessage("Wrong email or password");
                     $viewRenderer = $this->container->get('view');

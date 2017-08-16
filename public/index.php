@@ -28,4 +28,6 @@ $app->get('/register',\Controller\AuthController::class.':showRegPage');
 $app->post('/register',\Controller\AuthController::class.':getRegisterParams');
 $app->get('/login',\Controller\AuthController::class.':showLoginPage');
 $app->post('/login',\Controller\AuthController::class.':loginUsers');
+$app->get('/home',\Controller\HomeController::class.':showHomePage');
+$app->get('/discussion',\Controller\HomeController::class.':createNewDiscussion');
 $app->run();
