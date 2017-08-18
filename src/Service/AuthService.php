@@ -27,4 +27,17 @@ class AuthService
             return 0;
         }
     }
+    public static function discussions($sel){
+        $sel = json_decode($sel, true);
+        $tit_arr=[];
+        $id_arr=[];
+       foreach ($sel as $k){
+           $title=$k["title"];
+           $id=$k["id"];
+           array_push($tit_arr,$title);
+           array_push($id_arr,$id);
+
+       }
+
+    }
 }

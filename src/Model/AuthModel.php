@@ -57,9 +57,7 @@ class AuthModel
 
     public function checkLogin($email, $password)
     {
-
         $all = $this->db->table($this->table)->where(["email" => $email, "active" => 1])->get();
         return AuthService::checkLogin($all, $password);
     }
-
 }
