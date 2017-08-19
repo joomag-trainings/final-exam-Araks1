@@ -17,6 +17,7 @@ class AuthController
     protected $db = '';
     private $container = '';
     public $successMessage = '';
+    public $response = '';
 
     public function __construct(ContainerInterface $container)
     {
@@ -86,6 +87,12 @@ class AuthController
 
     public function showRegPage(Request $request, Response $response)
     {
+        session_start();
+
+        if (isset($_SESSION['id'])) {
+
+            return $response->withRedirect('home');
+        }
 
         $viewRenderer = $this->container->get('view');
         $response = $viewRenderer->render($response, "RegView.phtml", ["error" => $this->errorMessage]);
@@ -105,7 +112,7 @@ class AuthController
                 $valid = filter_var($email, FILTER_VALIDATE_EMAIL);
                 if ($valid) {
                     $this->db = $this->container->get(AuthModel::class);
-                    $this->errorMessage = $this->db->insert([
+                    $this->response = $this->db->insert([
                         "first_name" => $firstname,
                         "last_name" => $lastname,
                         "user_name" => $username,
@@ -113,7 +120,8 @@ class AuthController
                         "password" => $password,
                         "hash" => $hash
                     ]);
-                    if ($this->errorMessage === true) {
+
+                    if ($this->response === true) {
                         $this->setErrorMessage("Check your email");
 
                         $mail = new PHPMailer(true);
@@ -124,14 +132,12 @@ class AuthController
                             $mail->SMTPSecure = "tls";
                             $mail->Host = "smtp.gmail.com";
                             $mail->Port = 587;
-                            $mail->Username = "araqs.shahbazian@gmail.com";
-                            $mail->Password = "*****";
-
-                            $mail->setFrom('araqs.shahbazian@gmail.com', 'Forum');
-                            $mail->addReplyTo('araqs.shahbazian@gmail.com', 'Forum');
+                            $mail->Username = "letstalkforum0@gmail.com";
+                            $mail->Password = "letstalk1111";
+                            $mail->setFrom('letstalkforum0@gmail.com', 'Forum');
+                            $mail->addReplyTo('letstalkforum0@gmail.com', 'Forum');
                             $mail->AddAddress($email, $email);
-
-                            $mail->Subject = 'Subject of the Email';
+                            $mail->Subject = 'Confirmation of account';
                             $mail->msgHTML(" <p>Hi,</p>
         <p>            
         Thanks for Registration.  We have received a request for a creating account associated with this email address.
@@ -141,14 +147,13 @@ class AuthController
         please disregard this message .
         </p >
         <p >
-        If you have any questions about this email, you may contact us at support@forum. com .
+        If you have any questions about this email, you may contact us at letstalkforum0@gmail.com .
         </p >
         <p >
                             With regards,
         <br >
                             The Forum . com Team
                             </p > ");
-
 
                             $mail->send();
                         } catch (phpmailerException $e) {
@@ -157,9 +162,18 @@ class AuthController
                             echo $e->getMessage();
                         }
 
+                    } else {
+                        if ($this->response === 0) {
+                            $this->setErrorMessage("This email already exist");
+
+                        } else {
+                            if ($this->response === 1) {
+                                $this->setErrorMessage("This username is already in use");
+                            } else {
+                                $this->setErrorMessage("Data is too long");
+                            }
+                        }
                     }
-                } else {
-                    $this->setErrorMessage("Invalid email");
                 }
 
 
@@ -177,6 +191,7 @@ class AuthController
 
     public function showLoginPage(Request $request, Response $response)
     {
+        $viewRenderer = $this->container->get('view');
         if (isset($_GET["hash"])) {
             $hash = $_GET["hash"];
             $res = $this->db->sel($hash);
@@ -184,8 +199,13 @@ class AuthController
                 $this->setSuccessMessage("Registration is Done!!!Log in to your account");
             }
         }
-        $viewRenderer = $this->container->get('view');
-        $response = $viewRenderer->render($response, "LoginView.phtml", ["success" => $this->successMessage]);
+        session_start();
+        if (isset($_SESSION['id'])) {
+
+            return $response->withRedirect('home');
+        }
+
+        $response = $viewRenderer->render($response, "LoginView.phtml", ["error" => $this->successMessage]);
     }
 
     public function loginUsers(Request $request, Response $response)
@@ -197,17 +217,29 @@ class AuthController
                 $check = $this->db->checkLogin($email, $password);
                 if ($check !== 0) {
                     session_start();
-                    $_SESSION["id"]=$check;
+                    $_SESSION["id"] = $check;
                     return $response->withRedirect('home');
                 } else {
-                    $this->setSuccessMessage("Wrong email or password");
+                    $this->setErrorMessage("Wrong email or password");
                     $viewRenderer = $this->container->get('view');
                     $response = $viewRenderer->render($response, "LoginView.phtml",
-                        ["success" => $this->successMessage]);
+                        ["error" => $this->errorMessage]);
 
                 }
+            } else {
+                $this->setErrorMessage("Fill all the fields");
+                $viewRenderer = $this->container->get('view');
+                $response = $viewRenderer->render($response, "LoginView.phtml",
+                    ["error" => $this->errorMessage]);
             }
         }
 
+    }
+
+    public function signOut(Request $request, Response $response)
+    {
+        session_start();
+        session_destroy();
+        return $response->withRedirect('login');
     }
 }

@@ -38,14 +38,24 @@ class AuthModel
 
     public function insert($params)
     {
-        try {
-            $insert = $this->db->table($this->table)->insert($params);
-            return AuthService::insert($insert);
-        } catch (\Exception $exception) {
-            $this->error = $exception->getMessage();
-            return $this->error;
-        }
+        $sel = $this->db->table($this->table)->where('email', $params['email'])->count();
+        if ($sel === 0) {
+            try {
 
+                $insert = $this->db->table($this->table)->insert($params);
+                return AuthService::insert($insert);
+            } catch (\Exception $exception) {
+                $code = $exception->errorInfo[1];
+                if ($code === 1062) {
+                    return 1;
+                } else {
+                    return $exception->getMessage();
+                }
+
+            }
+        } else {
+            return 0;
+        }
     }
 
     public function sel($hash)

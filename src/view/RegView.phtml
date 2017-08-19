@@ -4,8 +4,9 @@
 <div id="register" class="form">
     <form  action="register" autocomplete="on" method="post">
         <h1> Sign up </h1>
+        <p class="error"><?= $error; ?></p>
         <p>
-            <?= $error; ?>
+
             <label for="firstnamesignup" class="fname" >Your firstname</label>
             <input id="firstnamesignup" name="first_name" required="required" type="text" placeholder="myfirstname" />
         </p>
@@ -23,7 +24,7 @@
         </p>
         <p>
             <label for="passwordsignup" class="youpasswd" >Your password </label>
-            <input id="passwordsignup" name="password" required="required" type="password" placeholder="eg. X8df!90EO"/>
+            <input id="passwordsignup" name="password" required="required" type="password" placeholder="eg. X8df!90EO" pattern=".{5,10}" />
         </p>
         <p class="signin button">
             <input type="submit" value="Sign up"/>

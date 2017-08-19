@@ -63,4 +63,13 @@ class DiscussionModel
         $selected = json_decode($selected, true);
         return $selected;
     }
+
+    public function selectComments($discussion_id)
+    {
+
+        $selected = $this->db->table('comments')->join('users', 'user_id', '=',
+            'users.id')->select('users.first_name', 'users.last_name',
+            'comments.*')->where(['comments.discussion_id' => $discussion_id])->orderBy('id', 'desc')->get();
+        return json_decode($selected, true);
+    }
 }

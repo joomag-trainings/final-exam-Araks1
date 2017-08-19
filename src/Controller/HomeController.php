@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Model\CommentsModel;
 use Model\DiscussionModel;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
@@ -108,10 +109,11 @@ class HomeController
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
             $info = $this->db->eachDiscussion($id);
+            $comments = $this->db->selectComments($id);
             $viewRenderer = $this->container->get('view');
-            $response = $viewRenderer->render($response, "EachDiscussion.phtml", ["info" => $info]);
+            $response = $viewRenderer->render($response, "EachDiscussion.phtml",
+                ["info" => $info, "comments" => $comments]);
         }
-
     }
 
 }

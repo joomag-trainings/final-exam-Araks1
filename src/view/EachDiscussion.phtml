@@ -1,22 +1,17 @@
 <?php
 include '../public/layouts/header.phtml'; ?>
-<link href="css/blog-post.css" rel="stylesheet">
-<div class="container">
-
+    <link href="../css/blog-post.css" rel="stylesheet">
+    <div class="container">
     <div class="row">
-
         <div class="col-lg-8">
-
             <!-- Title -->
             <h1 class="mt-4"><?= $info[0]["title"]; ?></h1>
-
             <!-- Author -->
             <p class="lead">
                 by <a href="#"></a><?= $info[0]["first_name"] . '  ' . $info[0]["last_name"]; ?>
             </p>
 
             <hr>
-
             <!-- Date/Time -->
             <p>Posted on <?= $info[0]["created_at"]; ?></p>
 
@@ -33,28 +28,103 @@ include '../public/layouts/header.phtml'; ?>
             </blockquote>
 
             <br>
-
-            <!-- Comments Form -->
-            <div class="card my-4">
-                <h5 class="card-header">Leave a Comment:</h5>
-                <div class="card-body">
-                    <form>
-                        <div class="form-group">
-                            <textarea class="form-control" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary submit">Submit</button>
-                    </form>
+            <?php session_start();
+            if (isset($_SESSION['id'])) { ?>
+                <!-- Comments Form -->
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3" id="input"></textarea>
+                                <input type="hidden" id="id" value="<?= $_GET['id']; ?>">
+                            </div>
+                            <button type="button" class="btn btn-primary submit" id="comment">Submit</button>
+                        </form>
+                    </div>
                 </div>
-            </div>
+                <script>CKEDITOR.replace('input');</script>
+                <script src="../../public/js/script.js"></script>
+            <?php } else{ ?>
+                <div class="card my-4">
+                    <h5 class="card-header">Leave a Comment:</h5>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
 
+                            <a href="login">
+                                <button type="button" class="btn btn-primary btn-lg">Login for leaving comment</button>
+                            </a>
+                        </form>
+                    </div>
+                </div>
+            <?php } ?>
             <!-- Single Comment -->
-            <div class="media mb-4">
-                <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+            <div class="media mb-4" id="none" hidden>
+
                 <div class="media-body">
-                    <h5 class="mt-0">Commenter Name</h5> Cras sit amet nibh libero, in gravida nulla. Nulla vel metus
-                    scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis.
-                    Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                    <div class="panel panel-default">
+                        <div class="panel-heading" id="hd"><h5 class="mt-0" id="commenter_name"></h5>
+                            <button type="button" id="del" class="btn btn-info btn-lg" data-toggle="modal"
+                                    data-target="#myModal">Delete <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="panel-body"><p id="comment_text"></p></div>
+                        <div class="panel-footer"><span id="date"></span></div>
+                    </div>
+
+
                 </div>
             </div>
+            <?php foreach ($comments as $comm) { ?>
+                <div class="media mb-4">
+
+                    <div class="media-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="hd"><h5 class="mt-0"
+                                                                   id="commenter_name"><?= $comm["first_name"] . ' ' . $comm["last_name"]; ?></h5><?php if ($comm['user_id'] === $_SESSION['id']) { ?>
+                                    <button type="button" id="del" class="btn btn-info btn-lg" data-toggle="modal"
+                                            data-target="#myModal" data-id="<?= $comm['id']; ?>"
+                                            data-post="<?= $comm['discussion_id']; ?>" onclick="get(this)">Delete <i
+                                                class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+                                <?php } ?></div>
+                            <div class="panel-body"><p id="comment_text"><?= $comm["comment"]; ?></p></div>
+                            <div class="panel-footer"><span id="date"><?= $comm["created_at"]; ?></span></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Delete Comment</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure ?</p>
+                                <button id="no">No</button>
+                                <a href="delete" id="yes_get" onclick="set(this)">
+                                    <button id="yes">Yes</button>
+                                </a>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            <?php } ?>
         </div>
     </div>
+
+<?php include '../public/layouts/footer.phtml'; ?>

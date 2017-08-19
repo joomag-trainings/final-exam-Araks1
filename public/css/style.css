@@ -174,6 +174,7 @@ a.hiddenanchor{
     min-height: 560px;
     margin: 0px auto;
     width: 500px;
+
     position: relative;
 }
 /**** Styling the form elements **/
@@ -432,6 +433,7 @@ p.change_link{
     width: 88%;
     padding: 18px 6% 60px 6%;
     margin:0  35px;
+    margin-top: 80px;
     background: rgb(247, 247, 247);
     border: 1px solid rgba(147, 184, 189,0.8);
     -webkit-box-shadow: 0pt 2px 5px rgba(105, 108, 109,  0.7),	0px 0px 8px 5px rgba(208, 223, 226, 0.4) inset;
@@ -4469,12 +4471,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
    min-height: calc(100% - 40px);
 
 }
+.header-nav{
+    padding: 40px 0 0px 20px;
+}
+.header-nav li{
+    font-size: 20px;
+}
+.navbar-right li{
+    font-size: 18px;
+}
+.error{
+    color: red;
+}
 footer{
     height:40px;
     text-align: center;
     background-color: #1d3c41;
     font-size: 14px;
     color: white;
+    margin-top: 80px;
 
 }
 footer a{
@@ -4495,4 +4510,37 @@ footer a{
 .log{
     font-family: 'Raleway', sans-serif;
     color: #0f74a8;
+}
+#del{
+    float: right;
+}
+#commenter_name{
+    display: block;width: 200px;
+    float: left;
+}
+#hd{
+    overflow: hidden;
+}
+.navbar-fixed-left {
+    background-color: #1d3c41;
+    width: 140px;
+    position: fixed;
+    border-radius: 0;
+    height: 100%;
+    border: none;
+}
+
+.navbar-fixed-left .navbar-nav > li {
+    float: none;  /* Cancel default li float: left */
+    width: 139px;
+}
+
+.navbar-fixed-left + .container {
+    padding-left: 160px;
+}
+
+/* On using dropdown menu (To right shift popuped) */
+.navbar-fixed-left .navbar-nav > li > .dropdown-menu {
+    margin-top: -50px;
+    margin-left: 140px;
 }
