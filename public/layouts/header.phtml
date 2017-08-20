@@ -3,7 +3,8 @@
     <meta charset="UTF-8"/>
     <title>Lets Talk</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../css/style.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -11,23 +12,21 @@
 </head>
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-left">
-    <a class="navbar-brand" href="#"><img src="../images/logo.png" width="60px" height="60px"></a>
-    <ul class="nav navbar-nav header-nav">
-
-        <li><a href="home"><i class="fa fa-comment-o" aria-hidden="true"></i>
-                Forum</a></li>
-    </ul>
-    <?php if (isset($_SESSION["id"])) { ?>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="signout"><i class="fa fa-sign-out" aria-hidden="true"></i>Sign Out</a></li>
-
+    <div class="navbar navbar-inverse navbar-fixed-left">
+        <a class="navbar-brand" href="#"><img src="../images/logo.png" width="60px" height="60px"></a>
+        <ul class="nav navbar-nav header-nav">
+            <li><a href="home"><i class="fa fa-comment-o" aria-hidden="true"></i>Forum</a></li>
         </ul>
-    <?php } else { ?>
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-            <li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-        </ul>
+        <?php session_start();
+        if (isset($_SESSION["id"])) { ?>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="signout"><i class="fa fa-sign-out" aria-hidden="true"></i>Sign Out</a></li>
+            </ul>
+        <?php } else { ?>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="register"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+                <li><a href="login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
 
-    <?php } ?>
-</div>
+        <?php } ?>
+    </div>

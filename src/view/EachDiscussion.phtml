@@ -1,119 +1,218 @@
 <?php
 include '../public/layouts/header.phtml'; ?>
-    <link href="../css/blog-post.css" rel="stylesheet">
+<div class="all">
     <div class="container">
-    <div class="row">
-        <div class="col-lg-8">
-            <!-- Title -->
-            <h1 class="mt-4"><?= $info[0]["title"]; ?></h1>
-            <!-- Author -->
-            <p class="lead">
-                by <a href="#"></a><?= $info[0]["first_name"] . '  ' . $info[0]["last_name"]; ?>
-            </p>
-
-            <hr>
-            <!-- Date/Time -->
-            <p>Posted on <?= $info[0]["created_at"]; ?></p>
-
-
-            <!-- Post Content -->
-            <p class="lead"><?= $info[0]["description"]; ?></p>
-
-            <blockquote class="blockquote">
-                <p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a
-                    ante.</p>
-                <footer class="blockquote-footer">Someone famous in
-                    <cite title="Source Title">Source Title</cite>
-                </footer>
-            </blockquote>
-
-            <br>
-            <?php session_start();
-            if (isset($_SESSION['id'])) { ?>
-                <!-- Comments Form -->
-                <div class="card my-4">
-                    <h5 class="card-header">Leave a Comment:</h5>
-                    <div class="card-body">
-                        <form>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="3" id="input"></textarea>
-                                <input type="hidden" id="id" value="<?= $_GET['id']; ?>">
-                            </div>
-                            <button type="button" class="btn btn-primary submit" id="comment">Submit</button>
-                        </form>
+        <div class="row">
+            <?php if (isset($_SESSION['id'])) {
+                if ($_SESSION['id'] === $info[0]['user_id']) { ?>
+                    <div class="icons">
+                        <a href="" data-toggle="modal" data-target="#editModal" id="edit" data-id="<?= $_GET['id'] ?>">
+                            <i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a data-toggle="modal" data-target="#archiveModal" id="archive" data-id="<?= $_GET['id'] ?>"><i
+                                    class="fa fa-times" aria-hidden="true"></i></a>
                     </div>
-                </div>
-                <script>CKEDITOR.replace('input');</script>
-                <script src="../../public/js/script.js"></script>
-            <?php } else{ ?>
-                <div class="card my-4">
-                    <h5 class="card-header">Leave a Comment:</h5>
-                    <div class="card-body">
-                        <form>
-                            <div class="form-group">
-                                <textarea class="form-control" rows="3"></textarea>
+                <?php }
+            } ?>
+            <div class="col-lg-8">
+                <!-- Title -->
+                <h1 class="mt-4" id="title"><?= $info[0]["title"]; ?></h1>
+                <!-- Author -->
+                <p class="lead">
+                    by <a href="#"></a><?= $info[0]["first_name"] . '  ' . $info[0]["last_name"]; ?>
+                </p>
+                <hr>
+                <!-- Date/Time -->
+                <p>Posted on <?= $info[0]["created_at"]; ?></p>
+                <blockquote class="blockquote">
+                    <span class="mb-0" id="desc"><?= $info[0]["description"]; ?></span>
+                    <footer class="blockquote-footer">Created by
+                        <cite title="Source Title"><a
+                                    href="#"></a><?= $info[0]["first_name"] . '  ' . $info[0]["last_name"]; ?></cite>
+                    </footer>
+                </blockquote>
+                <br>
+                <?php
+                if ($info[0]['open'] !== 0) {
+                    if (isset($_SESSION['id'])) { ?>
+                        <!-- Comments Form -->
+                        <div class="card my-4">
+                            <h5 class="card-header">Leave a Comment:</h5>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3" id="input"></textarea>
+                                        <input type="hidden" id="id" value="<?= $_GET['id']; ?>">
+                                    </div>
+                                    <button type="button" class="btn btn-primary submit" id="comment">Submit</button>
+                                </form>
                             </div>
-
-                            <a href="login">
-                                <button type="button" class="btn btn-primary btn-lg">Login for leaving comment</button>
-                            </a>
-                        </form>
-                    </div>
-                </div>
-            <?php } ?>
-            <!-- Single Comment -->
-            <div class="media mb-4" id="none" hidden>
-
-                <div class="media-body">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" id="hd"><h5 class="mt-0" id="commenter_name"></h5>
-                            <button type="button" id="del" class="btn btn-info btn-lg" data-toggle="modal"
-                                    data-target="#myModal">Delete <i class="fa fa-trash-o" aria-hidden="true"></i>
-                            </button>
                         </div>
-                        <div class="panel-body"><p id="comment_text"></p></div>
-                        <div class="panel-footer"><span id="date"></span></div>
-                    </div>
+                        <script>CKEDITOR.replace('input');</script>
+                        <script src="../../public/js/script.js"></script>
+                    <?php } else{ ?>
+                        <div class="card my-4">
+                            <h5 class="card-header">Leave a Comment:</h5>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group">
+                                        <textarea class="form-control" rows="3"></textarea>
+                                    </div>
 
+                                    <a href="login">
+                                        <button type="button" class="btn btn-primary btn-lg">Login for leaving comment
+                                        </button>
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+                    <?php }
+                } ?>
 
-                </div>
-            </div>
-            <?php foreach ($comments as $comm) { ?>
-                <div class="media mb-4">
+                <?php foreach ($comments as $comm) { ?>
+                    <!-- Single Comment -->
+                    <div class="media mb-4" id="none" hidden>
 
-                    <div class="media-body">
-                        <div class="panel panel-default">
-                            <div class="panel-heading" id="hd"><h5 class="mt-0"
-                                                                   id="commenter_name"><?= $comm["first_name"] . ' ' . $comm["last_name"]; ?></h5><?php if ($comm['user_id'] === $_SESSION['id']) { ?>
+                        <div class="media-body">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="hd"><h5 class="mt-0" id="commenter_name"></h5>
+                                    <a onclick="getId(this)" data-toggle="modal" data-target="#bestModal"
+                                       data-id="<?= $comm['id']; ?>" data-desc="<?= $comm['discussion_id']; ?>"
+                                       class="mark"><i class="fa fa-check" aria-hidden="true"></i>Mark as best</a>
+
                                     <button type="button" id="del" class="btn btn-info btn-lg" data-toggle="modal"
-                                            data-target="#myModal" data-id="<?= $comm['id']; ?>"
-                                            data-post="<?= $comm['discussion_id']; ?>" onclick="get(this)">Delete <i
-                                                class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                            data-target="#myModal">Delete <i class="fa fa-trash-o"
+                                                                             aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="panel-body"><p id="comment_text"></p></div>
+                                <div class="panel-footer"><span id="date"></span></div>
+                            </div>
 
-                                <?php } ?></div>
-                            <div class="panel-body"><p id="comment_text"><?= $comm["comment"]; ?></p></div>
-                            <div class="panel-footer"><span id="date"><?= $comm["created_at"]; ?></span></div>
+
                         </div>
-
                     </div>
-                </div>
+                    <div class="media mb-4">
 
-                <!-- Modal -->
-                <div class="modal fade" id="myModal" role="dialog">
+                        <div class="media-body">
+                            <div class="panel panel-default">
+                                <div class="panel-heading" id="hd">
+                                    <?php if ($comm['best'] === 1) { ?>
+                                        <p class="best"><i class="fa fa-check" aria-hidden="true"></i>Best Answer</p>
+                                    <?php } ?>
+                                    <h5 class="mt-0"
+                                        id="commenter_name"><?= $comm["first_name"] . ' ' . $comm["last_name"]; ?></h5>
+
+                                    <?php if (isset($_SESSION['id'])) {
+                                        if ($info[0]['user_id'] === $_SESSION['id']) {
+                                            if ($if === 0) { ?>
+                                                <a href="mark?id=<?= $comm['id']; ?>&desc=<?= $_GET['id']; ?>"
+                                                   class="mark"><i class="fa fa-check" aria-hidden="true"></i>Mark as
+                                                    best</a>
+                                            <?php } else {
+                                                if ($comm['best'] !== 1) { ?>
+                                                    <a onclick="getId(this)" data-toggle="modal"
+                                                       data-target="#bestModal" data-id="<?= $comm['id']; ?>"
+                                                       data-desc="<?= $comm['discussion_id']; ?>" class="mark"><i
+                                                                class="fa fa-check" aria-hidden="true"></i>Mark as best</a>
+                                                <?php }
+                                            }
+                                        } ?>
+
+                                        <?php if (isset($_SESSION['id'])) {
+                                            if ($comm['user_id'] === $_SESSION['id']) { ?>
+                                                <button type="button" id="del" class="btn btn-info btn-lg"
+                                                        data-toggle="modal"
+                                                        data-target="#myModal" data-id="<?= $comm['id']; ?>"
+                                                        data-post="<?= $comm['discussion_id']; ?>" onclick="get(this)">
+                                                    Delete <i
+                                                            class="fa fa-trash-o" aria-hidden="true"></i></button>
+
+                                            <?php }
+                                        }
+                                    } ?></div>
+                                <div class="panel-body"><p id="comment_text"><?= $comm["comment"]; ?></p></div>
+                                <div class="panel-footer"><span id="date"><?= $comm["created_at"]; ?></span></div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Delete Comment</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure ?</p>
+                                    <button id="no">No</button>
+                                    <a href="delete" id="yes_get" onclick="set(this)">
+                                        <button id="yes">Yes</button>
+                                    </a>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <!-- Best Answer Modal -->
+                    <div class="modal fade" id="bestModal" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Do you want to change best answer?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure ?</p>
+                                    <button id="no">No</button>
+                                    <a href="mark" id="yes_get" onclick="setId(this)">
+                                        <button id="yes">Yes</button>
+                                    </a>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                <?php } ?>
+                <!-- Edit Modal -->
+                <div class="modal fade" id="editModal" role="dialog">
                     <div class="modal-dialog">
 
                         <!-- Modal content-->
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Delete Comment</h4>
+                                <h4 class="modal-title">Edit your Discussion</h4>
                             </div>
                             <div class="modal-body">
-                                <p>Are you sure ?</p>
-                                <button id="no">No</button>
-                                <a href="delete" id="yes_get" onclick="set(this)">
-                                    <button id="yes">Yes</button>
-                                </a>
+                                <form action="edit" method="post">
+                                    <div class="form-group">
+                                        <label for="title">Title:</label>
+                                        <input type="text" required class="form-control" id="modal-title"
+                                               placeholder="Edit title" name="title">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="desc">Description:</label>
+                                        <textarea type="text" required class="form-control" id="modal-desc"
+                                                  placeholder="Edit desciption" name="modal-desc"></textarea>
+                                    </div>
+                                    <input type="hidden" name="id" value="<?= $_GET['id']; ?>">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -122,9 +221,32 @@ include '../public/layouts/header.phtml'; ?>
 
                     </div>
                 </div>
+                <!--Archive Modal -->
+                <div class="modal fade" id="archiveModal" role="dialog">
+                    <div class="modal-dialog">
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Do you want to close this discussion?</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form action="archive" method="post">
 
-            <?php } ?>
+                                    <input type="hidden" name="id" value="<?= $_GET['id']; ?>">
+                                    <button type="" class="btn btn-primary">No</button>
+                                    <button type="submit" class="btn btn-primary">Yes</button>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
+</div>
 <?php include '../public/layouts/footer.phtml'; ?>
+<script>CKEDITOR.replace('modal-desc');</script>

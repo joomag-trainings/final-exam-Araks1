@@ -11,9 +11,7 @@ class AuthService
 
     public static function checkLogin($all, $pwd)
     {
-
         $all = json_decode($all, true);
-
         if ($all == []) {
             return 0;
         }
@@ -38,8 +36,6 @@ class AuthService
             $id = $k["id"];
             array_push($tit_arr, $title);
             array_push($id_arr, $id);
-
         }
-
     }
 }

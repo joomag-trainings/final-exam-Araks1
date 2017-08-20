@@ -1,21 +1,23 @@
 <?php include '../public/layouts/header.phtml'; ?>
-<div class="all">
-        <div id="container_demo" >
+    <div class="all">
+        <div id="container_demo">
             <div id="wrapper">
                 <div id="login" class="animate form">
-                    <form  action="login" method="post" autocomplete="on">
+                    <form action="login" method="post" autocomplete="on">
                         <h1>Log in</h1>
                         <p class="error"><?= $error; ?></p>
                         <p>
-                            <label for="email" class="uname" > Your email  </label>
-                            <input id="email" name="email" required="required" type="email" placeholder="mymail@mail.com"/>
+                            <label for="email" class="uname"> Your email </label>
+                            <input id="email" name="email" required="required" type="email"
+                                   placeholder="mymail@mail.com"/>
                         </p>
                         <p>
                             <label for="password" class="youpasswd"> Your password </label>
-                            <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO" />
+                            <input id="password" name="password" required="required" type="password"
+                                   placeholder="eg. X8df!90EO"/>
                         </p>
                         <p class="keeplogin">
-                            <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" />
+                            <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping"/>
                             <label for="loginkeeping">Keep me logged in</label>
                         </p>
                         <p class="signin button">
@@ -30,5 +32,5 @@
             </div>
         </div>
 
-</div>
+    </div>
 <?php include '../public/layouts/footer.phtml'; ?>

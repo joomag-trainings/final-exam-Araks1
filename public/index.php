@@ -52,4 +52,8 @@ $app->get('/single', \Controller\HomeController::class . ':showEachDiscussionPag
 $app->post('/post', \Controller\CommentsController::class . ':create');
 $app->get('/delete', \Controller\CommentsController::class . ':delete');
 $app->get('/error', \Controller\ErrorController::class . ':notFound');
+$app->get('/archive', \Controller\HomeController::class . ':showArchivePage');
+$app->get('/mark', \Controller\CommentsController::class . ':markBestAnswer');
+$app->post('/edit', \Controller\HomeController::class . ':edit');
+$app->post('/archive', \Controller\HomeController::class . ':archive');
 $app->run();

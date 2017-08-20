@@ -16,14 +16,12 @@ class CommentsController
     {
         $this->container = $container;
         $this->db = $this->container->get(CommentsModel::class);
-
     }
 
     public function create(Request $request, Response $response)
     {
         $inp = $_POST["input"];
         $id = $_POST["id"];
-
         if ($inp !== "") {
             session_start();
             $res = $this->db->create([
@@ -36,8 +34,6 @@ class CommentsController
                 $show = $this->db->select($id, $_SESSION['id']);
                 echo $show;
             }
-        } else {
-
         }
     }
 
@@ -51,5 +47,13 @@ class CommentsController
                 return $response->withRedirect("single?id=$id");
             }
         }
+    }
+
+    public function markBestAnswer(Request $request, Response $response)
+    {
+        $id = $_GET['id'];
+        $desc = $_GET["desc"];
+        $res = $this->db->markBest($id);
+        return $response->withRedirect("single?id=$desc");
     }
 }

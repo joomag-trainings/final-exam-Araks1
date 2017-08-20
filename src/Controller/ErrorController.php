@@ -12,7 +12,6 @@ class ErrorController extends NotFound
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-
     }
 
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response)

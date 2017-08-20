@@ -3,14 +3,14 @@ include '../public/layouts/header.phtml'; ?>
 
 <div class="container">
     <h2>Create New Discussion</h2>
-
     <form method="post" action="discussion">
+        <?= $error; ?>
         <div class="form-group">
             <label for="usr">Title:</label>
             <input type="text" class="form-control" id="usr" name="title">
         </div>
         <div class="form-group">
-            <label for="pwd">Descriptiom:</label>
+            <label for="pwd">Description:</label>
             <textarea type="text" class="form-control" id="desc" name="desc"></textarea>
         </div>
         <button type="submit" class="btn btn-primary" name="create">Create</button>

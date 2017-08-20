@@ -3,10 +3,8 @@
 namespace Controller;
 
 use Psr\Container\ContainerInterface;
-use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Service\AuthService;
 use Model\AuthModel;
 use PHPMailer;
 
@@ -88,7 +86,6 @@ class AuthController
     public function showRegPage(Request $request, Response $response)
     {
         session_start();
-
         if (isset($_SESSION['id'])) {
 
             return $response->withRedirect('home');
@@ -186,7 +183,6 @@ class AuthController
         $viewRenderer = $this->container->get('view');
         $response = $viewRenderer->render($response, "RegView.phtml", ["error" => $this->errorMessage]);
         return $response;
-
     }
 
     public function showLoginPage(Request $request, Response $response)

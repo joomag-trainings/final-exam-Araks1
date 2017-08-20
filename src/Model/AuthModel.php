@@ -3,7 +3,6 @@
 namespace Model;
 
 use Psr\Container\ContainerInterface;
-use Slim\Container;
 use Service\AuthService;
 
 class AuthModel
@@ -14,10 +13,8 @@ class AuthModel
 
     public function __construct(ContainerInterface $container)
     {
-
         $this->db = $container->get('db');
         $this->setTable('users');
-
     }
 
     /**
@@ -51,7 +48,6 @@ class AuthModel
                 } else {
                     return $exception->getMessage();
                 }
-
             }
         } else {
             return 0;
