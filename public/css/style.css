@@ -1133,6 +1133,14 @@ footer a {
     float: right;
 }
 
+#demo {
+    color: red;
+}
+
+#sign-false {
+    display: none;
+}
+
 #commenter_name {
     display: block;
     width: 200px;

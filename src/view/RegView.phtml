@@ -2,7 +2,7 @@
 <div class="all">
     <div id="wrapper">
 <div id="register" class="form">
-    <form  action="register" autocomplete="on" method="post">
+    <form  action="register" autocomplete="on" method="post" onsubmit="myFunction(this)">
         <h1> Sign up </h1>
         <p class="error"><?= $error; ?></p>
         <p>
@@ -24,10 +24,11 @@
         </p>
         <p>
             <label for="passwordsignup" class="youpasswd" >Your password </label>
-            <input id="passwordsignup" name="password" required="required" type="password" placeholder="eg. X8df!90EO" pattern=".{5,10}" />
+            <input id="passwordsignup"name="password" required="required" type="password" placeholder="eg. X8df!90EO"  />
+        <span id="demo"></span>
         </p>
         <p class="signin button">
-            <input type="submit" value="Sign up"/>
+            <input type="submit" id="signup" value="Sign up" />
         </p>
         <p class="change_link">
             Already a member ?
@@ -37,4 +38,5 @@
 </div>
     </div>
 </div>
+<script src="../../public/js/script.js"></script>
 <?php include '../public/layouts/footer.phtml'; ?>

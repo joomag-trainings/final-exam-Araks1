@@ -4,7 +4,7 @@ include '../public/layouts/header.phtml'; ?>
     <div class="container">
         <div class="row">
             <?php if (isset($_SESSION['id'])) {
-                if ($_SESSION['id'] === $info[0]['user_id']) { ?>
+                if ($_SESSION['id'] === $info[0]['user_id'] && $info[0]['open'] == 1) { ?>
                     <div class="icons">
                         <a href="" data-toggle="modal" data-target="#editModal" id="edit" data-id="<?= $_GET['id'] ?>">
                             <i class="fa fa-pencil" aria-hidden="true"></i></a>
@@ -43,12 +43,12 @@ include '../public/layouts/header.phtml'; ?>
                                         <textarea class="form-control" rows="3" id="input"></textarea>
                                         <input type="hidden" id="id" value="<?= $_GET['id']; ?>">
                                     </div>
-                                    <button type="button" class="btn btn-primary submit" id="comment">Submit</button>
+                                    <button type="button" class="btn btn-primary submit" id="comment">Comment</button>
                                 </form>
                             </div>
                         </div>
                         <script>CKEDITOR.replace('input');</script>
-                        <script src="../../public/js/script.js"></script>
+
                     <?php } else{ ?>
                         <div class="card my-4">
                             <h5 class="card-header">Leave a Comment:</h5>
@@ -67,7 +67,28 @@ include '../public/layouts/header.phtml'; ?>
                         </div>
                     <?php }
                 } ?>
+                <!-- Single Comment -->
+                <div id="app"></div>
+                <div class="media mb-4" id="none" hidden>
 
+                    <div class="media-body">
+                        <div class="panel panel-default">
+                            <div class="panel-heading" id="hd"><h5 class="mt-0" id="commenter_name"></h5>
+                                <a onclick="getId(this)" data-toggle="modal" data-target="#bestModal"
+                                   data-id="<?= $comm['id']; ?>" data-desc="<?= $comm['discussion_id']; ?>"
+                                   class="mark"><i class="fa fa-check" aria-hidden="true"></i>Mark as best</a>
+
+                                <button type="button" id="del" class="btn btn-info btn-lg" data-toggle="modal"
+                                        data-target="#myModal">Delete <i class="fa fa-trash-o"
+                                                                         aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <div class="panel-body" id="comment_text"></div>
+                            <div class="panel-footer"><span id="date"></span></div>
+                        </div>
+
+                    </div> <br>
+                </div>
                 <?php foreach ($comments as $comm) { ?>
                     <!-- Single Comment -->
                     <div class="media mb-4" id="none" hidden>
@@ -149,7 +170,7 @@ include '../public/layouts/header.phtml'; ?>
                                 </div>
                                 <div class="modal-body">
                                     <p>Are you sure ?</p>
-                                    <button id="no">No</button>
+                                    <button id="no" data-dismiss="modal" type="button">No</button>
                                     <a href="delete" id="yes_get" onclick="set(this)">
                                         <button id="yes">Yes</button>
                                     </a>
@@ -173,7 +194,7 @@ include '../public/layouts/header.phtml'; ?>
                                 </div>
                                 <div class="modal-body">
                                     <p>Are you sure ?</p>
-                                    <button id="no">No</button>
+                                    <button id="no" type="button" data-dismiss="modal">No</button>
                                     <a href="mark" id="yes_get" onclick="setId(this)">
                                         <button id="yes">Yes</button>
                                     </a>
@@ -234,7 +255,7 @@ include '../public/layouts/header.phtml'; ?>
                                 <form action="archive" method="post">
 
                                     <input type="hidden" name="id" value="<?= $_GET['id']; ?>">
-                                    <button type="" class="btn btn-primary">No</button>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
                                     <button type="submit" class="btn btn-primary">Yes</button>
                                 </form>
                             </div>
@@ -250,3 +271,4 @@ include '../public/layouts/header.phtml'; ?>
 </div>
 <?php include '../public/layouts/footer.phtml'; ?>
 <script>CKEDITOR.replace('modal-desc');</script>
+<script src="../../public/js/script.js"></script>

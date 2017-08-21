@@ -78,7 +78,7 @@ class HomeController
         $response = $viewRenderer->render($response, "CreateNewDiscussion.phtml", ["error" => $this->errorMessage]);
     }
 
-    public function createNewDiscussion(Response $response)
+    public function createNewDiscussion(Request $request,Response $response)
     {
         if (isset($_POST['create'])) {
             $title = $_POST['title'];

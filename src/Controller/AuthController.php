@@ -5,6 +5,8 @@ namespace Controller;
 use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use phpmailerException;
+use Exception;
 use Model\AuthModel;
 use PHPMailer;
 
@@ -16,6 +18,7 @@ class AuthController
     private $container = '';
     public $successMessage = '';
     public $response = '';
+    private $table = '';
 
     public function __construct(ContainerInterface $container)
     {
@@ -25,6 +28,7 @@ class AuthController
     }
 
     /**
+     * @param $param
      * @return string
      */
     static function sanitize($param)
@@ -93,26 +97,27 @@ class AuthController
 
         $viewRenderer = $this->container->get('view');
         $response = $viewRenderer->render($response, "RegView.phtml", ["error" => $this->errorMessage]);
+        return $response;
     }
 
     public function getRegisterParams(Request $request, Response $response)
     {
         if ($request->isPost()) {
-            $firstname = self::sanitize($_POST['first_name']);
-            $lastname = self::sanitize($_POST['last_name']);
-            $username = self::sanitize($_POST['user_name']);
+            $firstName = self::sanitize($_POST['first_name']);
+            $lastName = self::sanitize($_POST['last_name']);
+            $userName = self::sanitize($_POST['user_name']);
             $email = self::sanitize($_POST['email']);
             $password = self::sanitize($_POST['password']);
             $hash = bin2hex(random_bytes(16));
-            if ($firstname !== "" && $lastname !== "" && $username !== "" && $email !== "" && $password !== "") {
+            if ($firstName !== "" && $lastName !== "" && $userName !== "" && $email !== "" && $password !== "") {
                 $password = password_hash($password, PASSWORD_BCRYPT);
                 $valid = filter_var($email, FILTER_VALIDATE_EMAIL);
                 if ($valid) {
                     $this->db = $this->container->get(AuthModel::class);
                     $this->response = $this->db->insert([
-                        "first_name" => $firstname,
-                        "last_name" => $lastname,
-                        "user_name" => $username,
+                        "first_name" => $firstName,
+                        "last_name" => $lastName,
+                        "user_name" => $userName,
                         "email" => $email,
                         "password" => $password,
                         "hash" => $hash
@@ -124,7 +129,6 @@ class AuthController
                         $mail = new PHPMailer(true);
                         try {
                             $mail->isSMTP();
-                            $mail->SMTPDebug = true;
                             $mail->SMTPAuth = true;
                             $mail->SMTPSecure = "tls";
                             $mail->Host = "smtp.gmail.com";
@@ -232,7 +236,7 @@ class AuthController
 
     }
 
-    public function signOut(Request $request, Response $response)
+    public function signOut(Response $response)
     {
         session_start();
         session_destroy();

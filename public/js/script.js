@@ -12,11 +12,14 @@ comm.addEventListener("click", function () {
 
             if (xhttp.responseText !== "") {
                 var obj = JSON.parse(xhttp.responseText);
-                document.getElementById('none').style.display = "block";
-                document.getElementById('commenter_name').innerHTML = obj[0].first_name;
+                document.getElementById('commenter_name').innerHTML = obj[0].first_name+' '+obj[0].last_name;
                 document.getElementById('comment_text').innerHTML = obj[0].comment;
                 document.getElementById('date').innerHTML = obj[0].created_at;
+                document.getElementById('app').innerHTML+=document.getElementById('none').innerHTML;
+                CKEDITOR.instances.input.setData("");
+
             }
+
         }
     }
     xhttp.send("input=" + input + "&id=" + id);
@@ -24,6 +27,8 @@ comm.addEventListener("click", function () {
 function get($this) {
     cid = $this.getAttribute('data-id');
     did = $this.getAttribute('data-post');
+    console.log(cid);
+    console.log(did);
 
 }
 
