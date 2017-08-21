@@ -9,9 +9,8 @@ comm.addEventListener("click", function () {
     xhttp.onreadystatechange = function () {
 
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-
             if (xhttp.responseText !== "") {
-                var obj = JSON.parse(xhttp.responseText);
+                 obj = JSON.parse(xhttp.responseText);
                 document.getElementById('commenter_name').innerHTML = obj[0].first_name+' '+obj[0].last_name;
                 document.getElementById('comment_text').innerHTML = obj[0].comment;
                 document.getElementById('date').innerHTML = obj[0].created_at;
@@ -27,13 +26,16 @@ comm.addEventListener("click", function () {
 function get($this) {
     cid = $this.getAttribute('data-id');
     did = $this.getAttribute('data-post');
-    console.log(cid);
-    console.log(did);
-
+    if(cid === "" && did === ""){
+        cid = obj[0]['id'];
+        did=obj[0]['discussion_id'];
+    }
 }
 
 function set($this) {
     $this.setAttribute("href", "delete?id=" + did + "&cid=" + cid);
+    console.log(cid);
+    console.log(descId);
 }
 
 function mark($this) {
@@ -52,8 +54,14 @@ function mark($this) {
 }
 
 function getId($this) {
+
     id = $this.getAttribute('data-id');
     descId = $this.getAttribute('data-desc');
+    if(id === "" && descId === ""){
+        id = obj[0]['id'];
+        descId=obj[0]['discussion_id'];
+    }
+
 }
 
 function setId($this) {

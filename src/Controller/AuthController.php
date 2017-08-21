@@ -236,7 +236,7 @@ class AuthController
 
     }
 
-    public function signOut(Response $response)
+    public function signOut(Request $request,Response $response)
     {
         session_start();
         session_destroy();

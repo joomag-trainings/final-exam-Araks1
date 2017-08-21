@@ -61,4 +61,5 @@ class CommentsModel
         $upd = $this->db->table($this->table)->where('id', $id)->update(["best" => 1]);
         return $upd;
     }
+
 }

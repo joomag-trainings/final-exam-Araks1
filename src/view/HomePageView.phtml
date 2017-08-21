@@ -1,8 +1,8 @@
 <?php
 include '../public/layouts/header.phtml';
-
 if (isset($_SESSION["id"])) { ?>
-    <div class="all">
+    <div class="container">
+
     <div class="container layout left">
         <p class="log">Have an idea?</p>
         <a href="discussion">
@@ -10,7 +10,7 @@ if (isset($_SESSION["id"])) { ?>
         </a>
     </div>
 <?php } else { ?>
-    <div class="all">
+    <div class="container">
     <div class="container layout">
         <p class="log">For creating new discussion</p>
         <a href="login">

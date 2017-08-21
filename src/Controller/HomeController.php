@@ -102,6 +102,13 @@ class HomeController
                         ["error" => $this->errorMessage]);
                 }
             }
+            else{
+                $this->setErrorMessage("Fill all fields");
+                $viewRenderer = $this->container->get('view');
+                $response = $viewRenderer->render($response, "CreateNewDiscussion.phtml",
+                    ["error" => $this->errorMessage]);
+                return $response;
+            }
         }
     }
 
