@@ -49,7 +49,7 @@ class CommentsModel
         return $selected;
     }
 
-    public function delete($id)
+    public function deleteComment($id)
     {
         $del = $this->db->table($this->table)->where('id', $id)->delete();
         return $del;

@@ -22,17 +22,22 @@ class HomeController
 
     public function showHomePage(Request $request, Response $response)
     {
-        $sel = $this->db->selectActiveDiscussions();
-        $archive = $this->db->selectArchiveDiscussions();
+        $activeDiscussions = $this->db->selectActiveDiscussions();
+        $archiveDiscussions = $this->db->selectArchiveDiscussions();
         session_start();
         if (isset($_SESSION["id"])) {
-            $list = $this->db->selectMyDiscussions($_SESSION["id"]);
+            $myDiscussions = $this->db->selectMyDiscussions($_SESSION["id"]);
             $viewRenderer = $this->container->get('view');
             $response = $viewRenderer->render($response, "HomePageView.phtml",
-                ["args" => $sel, "archive" => $archive, "list" => $list]);
+                [
+                    "activeDiscussions" => $activeDiscussions,
+                    "archive" => $archiveDiscussions,
+                    "myDiscussions" => $myDiscussions
+                ]);
         } else {
             $viewRenderer = $this->container->get('view');
-            $response = $viewRenderer->render($response, "HomePageView.phtml", ["args" => $sel, "archive" => $archive]);
+            $response = $viewRenderer->render($response, "HomePageView.phtml",
+                ["activeDiscussions" => $activeDiscussions, "archiveDiscussions" => $archiveDiscussions]);
         }
     }
 
@@ -68,7 +73,7 @@ class HomeController
         $this->successMessage = $successMessage;
     }
 
-    public function showCreatePage(Request $request, Response $response)
+    public function showDiscussionCreatePage(Request $request, Response $response)
     {
         session_start();
         if (!isset($_SESSION["id"])) {
@@ -78,31 +83,30 @@ class HomeController
         $response = $viewRenderer->render($response, "CreateNewDiscussion.phtml", ["error" => $this->errorMessage]);
     }
 
-    public function createNewDiscussion(Request $request,Response $response)
+    public function createNewDiscussion(Request $request, Response $response)
     {
         if (isset($_POST['create'])) {
             $title = $_POST['title'];
-            $desc = $_POST['desc'];
-            if ($title !== "" && $desc !== "") {
+            $description = $_POST['desc'];
+            if ($title !== "" && $description !== "") {
                 session_start();
-                $ins = $this->db->create([
+                $insert = $this->db->create([
                     "user_id" => $_SESSION['id'],
                     "title" => $title,
-                    "description" => $desc,
+                    "description" => $description,
                     "open" => 1,
                     "created_at" => date("Y-m-d H:i:s"),
                 ]);
-                if ($ins) {
+                if ($insert) {
                     $last = $this->db->selectLastDiscussion();
-                    return $response->withRedirect("single?id=$last");
+                    return $response->withRedirect("/forum/public/index.php/discussion?id=$last");
                 } else {
                     $this->setErrorMessage("Something went wrong,Please try again");
                     $viewRenderer = $this->container->get('view');
                     $response = $viewRenderer->render($response, "CreateNewDiscussion.phtml",
                         ["error" => $this->errorMessage]);
                 }
-            }
-            else{
+            } else {
                 $this->setErrorMessage("Fill all fields");
                 $viewRenderer = $this->container->get('view');
                 $response = $viewRenderer->render($response, "CreateNewDiscussion.phtml",
@@ -117,36 +121,36 @@ class HomeController
         $viewRenderer = $this->container->get('view');
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
-            $info = $this->db->eachDiscussion($id);
-            $ifBest = $this->db->ifBest($id);
-            if ($info === []) {
+            $eachDiscussion = $this->db->eachDiscussion($id);
+            $bestDiscussion = $this->db->selectBestDiscussions($id);
+            if ($eachDiscussion === []) {
                 return $response = $viewRenderer->render($response, "404.phtml")->withStatus(404);
             }
             $comments = $this->db->selectComments($id);
             $viewRenderer = $this->container->get('view');
             $response = $viewRenderer->render($response, "EachDiscussion.phtml",
-                ["info" => $info, "comments" => $comments, "if" => $ifBest]);
+                ["eachDiscussion" => $eachDiscussion, "comments" => $comments, "bestDiscussion" => $bestDiscussion]);
         }
     }
 
-    public function edit(Request $request, Response $response)
+    public function editDiscussion(Request $request, Response $response)
     {
         $viewRenderer = $this->container->get('view');
         $title = $_POST['title'];
-        $desc = $_POST['modal-desc'];
+        $description = $_POST['modal-desc'];
         $id = $_POST['id'];
-        $update = $this->db->edit($id, ["title" => $title, "description" => $desc]);
+        $update = $this->db->editDiscussion($id, ["title" => $title, "description" => $description]);
         if ($update) {
-            return $response->withRedirect("single?id=$id");
+            return $response->withRedirect("/forum/public/index.php/discussion?id=$id");
         }
     }
 
-    public function archive(Request $request, Response $response)
+    public function archiveDiscussion(Request $request, Response $response)
     {
         $id = $_POST['id'];
-        $update = $this->db->archive($id);
-        if ($update) {
-            return $response->withRedirect("single?id=$id");
+        $archiveDiscussion = $this->db->archiveDiscussion($id);
+        if ($archiveDiscussion) {
+            return $response->withRedirect("/forum/public/index.php/discussion?id=$id");
         }
     }
 }

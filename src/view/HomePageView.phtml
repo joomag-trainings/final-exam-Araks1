@@ -2,10 +2,9 @@
 include '../public/layouts/header.phtml';
 if (isset($_SESSION["id"])) { ?>
     <div class="container">
-
     <div class="container layout left">
         <p class="log">Have an idea?</p>
-        <a href="discussion">
+        <a href="discussion/create">
             <button type="button" class="btn btn-primary btn-lg">Create new discussion</button>
         </a>
     </div>
@@ -22,17 +21,17 @@ if (isset($_SESSION["id"])) { ?>
 <?php } ?>
     <link rel="stylesheet" href="../../public/css/home.css">
     <div class="container">
-        <div class="row">
+        <div class="row center">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" href="#home"> <i class="fa fa-calendar-check-o"
+                        <li class="active"><a data-toggle="tab" href="#active"> <i class="fa fa-calendar-check-o"
                                                                                  aria-hidden="true"></i>
                                 Active Discuusions</a></li>
-                        <li><a data-toggle="tab" href="#menu1"> Archive <i class="fa fa-archive"
+                        <li><a data-toggle="tab" href="#archive"> Archive <i class="fa fa-archive"
                                                                            aria-hidden="true"></i></a></li>
                         <?php if (isset($_SESSION['id'])) { ?>
-                            <li><a data-toggle="tab" href="#menu2"> My discussions <i class="fa fa-folder-o"
+                            <li><a data-toggle="tab" href="#my"> My discussions <i class="fa fa-folder-o"
                                                                                       aria-hidden="true"></i>
                                 </a></li>
                         <?php } ?>
@@ -40,57 +39,55 @@ if (isset($_SESSION["id"])) { ?>
                 </div>
                 <div class="panel-body">
                     <div class="tab-content">
-                        <div id="home" class="tab-pane fade in active">
+                        <div id="active" class="tab-pane fade in active">
                             <ul class="list-group">
-                                <?php foreach ($args as $k) { ?>
+                                <?php foreach ($activeDiscussions as $active) { ?>
                                     <li class="list-group-item">
                                         <div class="checkbox">
                                             <i class="fa fa-list-ul" aria-hidden="true"></i>
                                             <label for="checkbox">
-                                                <?= $k["title"]; ?>
+                                                <a href='discussion?id=<?= $active["id"]; ?>' class="trash">
+                                                <?= $active["title"]; ?>
                                             </label>
                                         </div>
                                         <div class="pull-right action-buttons">
-                                            <a href='single?id=<?= $k["id"]; ?>' class="trash"><i class="fa fa-eye"
-                                                                                                  aria-hidden="true"></i>View</a>
+                                           <i class="fa fa-eye" aria-hidden="true"></i>View</a>
                                         </div>
                                     </li>
 
                                 <?php } ?>
                             </ul>
                         </div>
-                        <div id="menu1" class="tab-pane fade">
+                        <div id="archive" class="tab-pane fade">
                             <ul class="list-group">
-                                <?php foreach ($archive as $k) { ?>
+                                <?php foreach ($archiveDiscussions as $archive) { ?>
+
                                     <li class="list-group-item">
                                         <div class="checkbox">
                                             <i class="fa fa-list-ul" aria-hidden="true"></i>
-                                            <label for="checkbox">
-                                                <?= $k["title"]; ?>
-                                            </label>
+                                                <a href='discussion?id=<?= $archive["id"]; ?>' class="trash"><?= $archive["title"]; ?>
                                         </div>
                                         <div class="pull-right action-buttons">
-                                            <a href='single?id=<?= $k["id"]; ?>' class="trash"><i class="fa fa-eye"
-                                                                                                  aria-hidden="true"></i>View</a>
+                                           <i class="fa fa-eye" aria-hidden="true"></i>View </a>
                                         </div>
+
                                     </li>
 
                                 <?php } ?>
                             </ul>
                         </div>
-                        <div id="menu2" class="tab-pane fade">
+                        <div id="my" class="tab-pane fade">
                             <ul class="list-group">
-                                <?php foreach ($list as $l) { ?>
+                                <?php foreach ($myDiscussions as $myDiscussion) { ?>
                                     <li class="list-group-item">
                                         <div class="checkbox">
                                             <i class="fa fa-list-ul" aria-hidden="true"></i>
                                             <label for="checkbox">
-                                                <?= $l["title"]; ?>
+                                                <a href='discussion?id=<?= $myDiscussion["id"]; ?>' class="trash"> <?= $myDiscussion["title"]; ?>
                                             </label>
                                         </div>
                                         <div class="pull-right action-buttons">
-                                            <a href='single?id=<?= $l["id"]; ?>' class="trash"><i class="fa fa-eye"
-                                                                                                  aria-hidden="true"></i>View</a>
+                                           <i class="fa fa-eye" aria-hidden="true"></i>View</a>
                                         </div>
                                     </li>
 
@@ -103,7 +100,7 @@ if (isset($_SESSION["id"])) { ?>
                     <div class="row">
                         <div class="col-md-6">
                             <h6>
-                                Total Count <span class="label label-info"><?= count($args); ?></span></h6>
+                                Total Count <span class="label label-info"><?= count($activeDiscussions); ?></span></h6>
                         </div>
                     </div>
                 </div>

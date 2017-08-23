@@ -84,21 +84,21 @@ class DiscussionModel
         return $selected;
     }
 
-    public function ifBest($id)
+    public function selectBestDiscussions($id)
     {
         $count = $this->db->table("comments")->where(["discussion_id" => $id, "best" => 1])->count();
         return $count;
     }
 
-    public function edit($id, $params)
+    public function editDiscussion($id, $params)
     {
-        $upd = $this->db->table($this->table)->where("id", $id)->update($params);
-        return $upd;
+        $update = $this->db->table($this->table)->where("id", $id)->update($params);
+        return $update;
     }
 
-    public function archive($id)
+    public function archiveDiscussion($id)
     {
-        $upd = $this->db->table($this->table)->where("id", $id)->update(["open" => 0]);
-        return $upd;
+        $archiveDiscussion = $this->db->table($this->table)->where("id", $id)->update(["open" => 0]);
+        return $archiveDiscussion;
     }
 }

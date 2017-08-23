@@ -1080,6 +1080,9 @@ p.change_link {
     min-height: calc(100% - 40px);
 
 }
+.pre{
+    margin-top: 300px;
+}
 
 .header-nav {
     padding: 40px 0 0 20px;
@@ -1189,9 +1192,14 @@ footer a {
     color: cadetblue;
     background: none;
 }
-
+a:hover{
+    cursor: pointer;
+}
 .icons {
     float: right;
     font-size: 20px;
     color: #2d6277;
+}
+.center{
+    width: 800px;
 }

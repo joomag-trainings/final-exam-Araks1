@@ -54,7 +54,7 @@ class AuthModel
         }
     }
 
-    public function sel($hash)
+    public function select($hash)
     {
         $sel = $this->db->table($this->table)->where(["hash" => $hash, "active" => 0])->count();
         $upd = $this->db->table($this->table)->where("hash", $hash)->update(["active" => 1, "hash" => 0]);
